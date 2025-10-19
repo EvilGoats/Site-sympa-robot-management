@@ -145,6 +145,7 @@ export default function SympaLanding() {
 
 
 
+
   const [showContact, setShowContact] = useState(false);
   const [contactSent, setContactSent] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);

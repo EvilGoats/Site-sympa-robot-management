@@ -98,37 +98,20 @@ function Textarea(props: React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
   );
 }
 
-/* ---------- App ---------- */
 export default function SympaLanding() {
-  // Toujours utiliser PUBLIC_URL pour les fichiers du dossier public
   const BASE_URL = process.env.PUBLIC_URL || "";
   const LOGO = `${BASE_URL}/logo-sympa.png`;
   const VIDEO_SRC = `${BASE_URL}/veo-demo.mp4`;
-  const POSTER = `${BASE_URL}/poster-veo.jpg`; // si tu ajoutes l'image
+  const POSTER = `${BASE_URL}/poster-veo.jpg`;
 
+  // ⬇️ tout ton JSX DOIT rester ici, à l’intérieur de la fonction
   return (
-    <div>
-      <header>
-        <img
-          src={LOGO}
-          alt="Logo SYMPA"
-          style={{ height: "60px", marginBottom: "20px" }}
-        />
-      </header>
-
-      <section>
-        <video
-          controls
-          poster={POSTER}
-          style={{ maxWidth: "100%", borderRadius: "12px" }}
-        >
-          <source src={VIDEO_SRC} type="video/mp4" />
-          Votre navigateur ne supporte pas la vidéo.
-        </video>
-      </section>
-    </div>
+    <>
+      {/* ... ton contenu existant ... */}
+    </>
   );
-}
+} // ⬅️ la fonction se termine ici, pas avant
+
 
 
   const [showContact, setShowContact] = useState(false);

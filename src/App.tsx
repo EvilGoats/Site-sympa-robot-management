@@ -98,19 +98,50 @@ function Textarea(props: React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
   );
 }
 
+/* ---------- App ---------- */
 export default function SympaLanding() {
   const BASE_URL = process.env.PUBLIC_URL || "";
   const LOGO = `${BASE_URL}/logo-sympa.png`;
   const VIDEO_SRC = `${BASE_URL}/veo-demo.mp4`;
-  const POSTER = `${BASE_URL}/poster-veo.jpg`;
+  const POSTER = `${BASE_URL}/poster-veo.jpg`; // optionnel
 
-  // ⬇️ tout ton JSX DOIT rester ici, à l’intérieur de la fonction
   return (
-    <>
-      {/* ... ton contenu existant ... */}
-    </>
+    <div>
+      {/* ---------- Header ---------- */}
+      <header style={{ textAlign: "center", padding: "20px" }}>
+        <img
+          src={LOGO}
+          alt="Logo SYMPA"
+          style={{ height: "80px", marginBottom: "10px" }}
+        />
+        <h1>Projet SYMPA</h1>
+        <h2>Le compagnon qui veille, écoute et protège</h2>
+      </header>
+
+      {/* ---------- Vidéo ---------- */}
+      <section
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "10px",
+          marginTop: "40px",
+        }}
+      >
+        <h3>Découvrez la vidéo</h3>
+        <video
+          controls
+          poster={POSTER}
+          style={{ maxWidth: "80%", borderRadius: "12px" }}
+        >
+          <source src={VIDEO_SRC} type="video/mp4" />
+          Votre navigateur ne supporte pas la lecture de la vidéo.
+        </video>
+      </section>
+    </div>
   );
-} // ⬅️ la fonction se termine ici, pas avant
+}
+
 
 
 

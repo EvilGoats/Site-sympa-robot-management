@@ -1,6 +1,7 @@
 {
-  "name": "react-typescript",
+  "name": "site-sympa-robot-management",
   "version": "1.0.0",
+  "private": true,
   "homepage": "https://evilgoats.github.io/Site-sympa-robot-management",
   "description": "React and TypeScript example starter project",
   "keywords": ["typescript", "react", "starter"],

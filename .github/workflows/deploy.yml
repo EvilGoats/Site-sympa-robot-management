@@ -15,19 +15,27 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Setup Node (LTS)
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: 'npm'
-          cache-dependency-path: '**/package.json'  # évite l’erreur de lockfile manquant
+          node-version: 18
+          cache: npm
+          cache-dependency-path: '**/package.json'
 
-      - name: Install
-        run: npm install  # au lieu de npm ci, car tu n’as pas de package-lock.json
+      # Si pas de package-lock.json, on reste sur npm install
+      - name: Install deps
+        run: npm install --no-audit --no-fund
+
+      # Ceinture + bretelles : on s'assure des bons modules
+      - name: Enforce compatible deps
+        run: |
+          npm install -D schema-utils@3.3.0 fork-ts-checker-webpack-plugin@6.5.3 --no-audit --no-fund
+          npm ls schema-utils fork-ts-checker-webpack-plugin || true
 
       - name: Build
         run: npm run build

@@ -17,7 +17,7 @@ jobs:
       - name: Use Node.js 20 LTS
         uses: actions/setup-node@v4
         with:
-          node-version: '20'   # <-- pas de cache ici
+          node-version: '20'      # pas de cache
 
       - name: Configure npm (faster, non-interactive)
         run: |
@@ -26,17 +26,20 @@ jobs:
           npm config set progress false
           npm config set registry https://registry.npmjs.org/
 
-      - name: Install deps
+      # IMPORTANT: forcer la résolution avec overrides (sans lockfile)
+      - name: Install deps (resolve with overrides)
         env:
           CI: true
           HUSKY: 0
           HUSKY_SKIP_INSTALL: 1
         run: |
-          if [ -f package-lock.json ]; then
-            npm ci --no-audit --no-fund
-          else
-            npm install --no-audit --no-fund --legacy-peer-deps
-          fi
+          rm -f package-lock.json
+          npm install --no-audit --no-fund --legacy-peer-deps
+          # (optionnel) vérification rapide des versions réellement installées
+          npx --yes npm-which npm >/dev/null 2>&1 || true
+          npm ls schema-utils ajv ajv-keywords fork-ts-checker-webpack-plugin webpack || true
 
       - name: Build
+        env:
+          NODE_OPTIONS: --max_old_space_size=4096
         run: npm run build

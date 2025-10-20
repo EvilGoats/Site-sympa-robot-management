@@ -26,7 +26,7 @@ jobs:
           node-version: 18
           cache: npm
 
-      # IMPORTANT : avec package-lock.json on utilise npm ci
+      # IMPORTANT : on utilise le lockfile que tu as committé
       - name: Install (locked)
         run: npm ci --no-audit --no-fund
 
@@ -36,6 +36,13 @@ jobs:
       - name: Build
         run: npm run build
 
+      # Sécurité : on s'assure que l'index est bien généré
+      - name: Assert build contains index.html
+        run: |
+          ls -la build | sed -n '1,200p'
+          test -f build/index.html || (echo "❌ build/index.html manquant" && exit 1)
+
+      # SPA fallback (routes côté client)
       - name: SPA fallback for GitHub Pages
         run: cp build/index.html build/404.html
 

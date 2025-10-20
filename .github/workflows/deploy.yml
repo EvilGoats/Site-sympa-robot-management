@@ -1,4 +1,3 @@
-# .github/workflows/deploy.yml
 name: Deploy React app to GitHub Pages
 
 on:
@@ -6,54 +5,40 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
-
 jobs:
-  build:
+  deploy:
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Use Node.js 20
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
 
-      - name: Install dependencies (fresh resolve)
-        run: |
-          rm -f package-lock.json
-          npm install --no-audit --no-fund --legacy-peer-deps
+      - name: Install
+        run: npm ci
 
-      # 🔑 Empêche CRA de charger fork-ts-checker en CI
-      - name: Disable TypeScript type-checker for CI only
-        run: npm uninstall typescript --no-save || true
-
-      - name: Build project
-        env:
-          CI: false
-          TSC_COMPILE_ON_ERROR: true
+      - name: Build
         run: npm run build
 
-      - name: Upload Pages artifact
+      - name: SPA fallback for GitHub Pages
+        run: cp build/index.html build/404.html
+
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./build
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

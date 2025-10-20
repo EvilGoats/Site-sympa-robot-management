@@ -1,47 +1,51 @@
-# .github/workflows/build.yml
-name: build
+name: Deploy React app to GitHub Pages
 
 on:
   push:
     branches: [ main ]
-  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
-
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Use Node.js 20 LTS
+      - name: Use Node.js 20
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: 20
 
-      - name: Configure npm (faster, non-interactive)
-        run: |
-          npm config set fund false
-          npm config set audit false
-          npm config set progress false
-          npm config set registry https://registry.npmjs.org/
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
 
-      # Forcer une résolution propre (on ignore un éventuel vieux lockfile)
-      - name: Install deps (resolve with overrides)
+      - name: Build project
         env:
-          CI: true
-          HUSKY: 0
-          HUSKY_SKIP_INSTALL: 1
-        run: |
-          rm -f package-lock.json
-          npm install --no-audit --no-fund --legacy-peer-deps
-
-      # 🚫 Désactiver le type-checker TS dans la CI (contournement fiable)
-      - name: Disable TypeScript type-checker in CI
-        run: npm uninstall typescript --no-save || true
-
-      - name: Build
-        env:
-          NODE_OPTIONS: --max_old_space_size=4096
-          TSC_COMPILE_ON_ERROR: true
+          CI: false
         run: npm run build
+
+      - name: Upload build artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./build
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actio

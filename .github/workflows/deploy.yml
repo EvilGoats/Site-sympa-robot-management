@@ -1,49 +1,44 @@
-name: Deploy to GitHub Pages
+name: build
 
 on:
   push:
-    branches: [ "main" ]
-  workflow_dispatch:
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
+    branches: [ main ]
+  pull_request:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+    timeout-minutes: 30  # évite les runs “infinis”
 
-      - name: Setup Node
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js 20 LTS
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
+          cache: 'npm'
 
-      - name: Install dependencies
-        run: npm install
+      - name: Configure npm (faster, non-interactive)
+        run: |
+          npm config set fund false
+          npm config set audit false
+          npm config set progress false
+          npm config set registry https://registry.npmjs.org/
 
-      - name: Build project
+      # Désactive Husky/prepare/postinstall en CI si pas indispensables
+      - name: Install deps
+        env:
+          CI: true
+          HUSKY: 0
+          HUSKY_SKIP_INSTALL: 1
+        run: |
+          # Utilise le lockfile si présent; sinon repasse à npm install
+          if [ -f package-lock.json ]; then
+            npm ci --no-audit --no-fund
+          else
+            npm install --no-audit --no-fund --legacy-peer-deps
+          fi
+
+      - name: Build
         run: npm run build
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./build
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4

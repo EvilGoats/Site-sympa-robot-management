@@ -1,3 +1,4 @@
+# .github/workflows/deploy.yml
 name: Deploy React app to GitHub Pages
 
 on:
@@ -34,8 +35,8 @@ jobs:
           CI: false
         run: npm run build
 
-      - name: Upload build artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3   # <- orthographe exacte
         with:
           path: ./build
 
@@ -48,4 +49,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actio
+        uses: actions/deploy-pages@v4            # <- orthographe exacte

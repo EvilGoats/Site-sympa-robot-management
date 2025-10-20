@@ -20,12 +20,10 @@
     "ajv-keywords": "3.5.2"
   },
   "overrides": {
+    "schema-utils": "3.3.0",
     "ajv": "6.12.6",
     "ajv-keywords": "3.5.2",
-    "schema-utils": {
-      "ajv": "6.12.6",
-      "ajv-keywords": "3.5.2"
-    }
+    "terser-webpack-plugin": "5.3.10"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -22,9 +22,6 @@
   "overrides": {
     "ajv": "6.12.6",
     "ajv-keywords": "3.5.2",
-
-    // CRA 5 / Webpack 5 attendent schema-utils v3.
-    // On l'impose globalement ET pour les paquets qui tirent v4.
     "schema-utils": "3.3.0",
     "fork-ts-checker-webpack-plugin": {
       "schema-utils": "3.3.0"

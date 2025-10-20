@@ -16,14 +16,16 @@
     "@types/react": "18.2.38",
     "@types/react-dom": "18.2.15",
     "typescript": "4.4.4",
-
     "ajv": "6.12.6",
     "ajv-keywords": "3.5.2"
   },
   "overrides": {
     "ajv": "6.12.6",
     "ajv-keywords": "3.5.2",
-    "schema-utils/ajv": "6.12.6"
+    "schema-utils": {
+      "ajv": "6.12.6",
+      "ajv-keywords": "3.5.2"
+    }
   },
   "scripts": {
     "start": "react-scripts start",

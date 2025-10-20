@@ -25,17 +25,13 @@ jobs:
         with:
           node-version: 18
           cache: npm
-          cache-dependency-path: '**/package.json'
 
-      # Si pas de package-lock.json, on reste sur npm install
-      - name: Install deps
-        run: npm install --no-audit --no-fund
+      # IMPORTANT : avec package-lock.json on utilise npm ci
+      - name: Install (locked)
+        run: npm ci --no-audit --no-fund
 
-      # Ceinture + bretelles : on s'assure des bons modules
-      - name: Enforce compatible deps
-        run: |
-          npm install -D schema-utils@3.3.0 fork-ts-checker-webpack-plugin@6.5.3 --no-audit --no-fund
-          npm ls schema-utils fork-ts-checker-webpack-plugin || true
+      - name: Verify pinned deps (debug)
+        run: npm ls schema-utils fork-ts-checker-webpack-plugin || true
 
       - name: Build
         run: npm run build

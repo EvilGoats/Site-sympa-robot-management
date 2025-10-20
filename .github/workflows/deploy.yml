@@ -1,3 +1,4 @@
+# .github/workflows/deploy.yml
 name: Deploy React app to GitHub Pages
 
 on:
@@ -26,11 +27,13 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install dependencies
-        run: npm install --legacy-peer-deps
+      - name: Install dependencies (fresh resolve)
+        run: |
+          rm -f package-lock.json
+          npm install --no-audit --no-fund --legacy-peer-deps
 
-      # >>> Contournement clé : on enlève TypeScript pendant la CI
-      - name: Disable TypeScript type-checker in CI
+      # 🔑 Empêche CRA de charger fork-ts-checker en CI
+      - name: Disable TypeScript type-checker for CI only
         run: npm uninstall typescript --no-save || true
 
       - name: Build project

@@ -26,12 +26,7 @@
 
   "overrides": {
     "fork-ts-checker-webpack-plugin": "7.2.13",
-    "schema-utils": "3.3.0",
-    "ajv": "6.12.6",
-    "ajv-keywords": "3.5.2",
-    "terser-webpack-plugin": "5.3.10",
-    "webpack": { "schema-utils": "3.3.0" },
-    "terser-webpack-plugin-dep": { "schema-utils": "3.3.0" }
+    "terser-webpack-plugin": "5.3.10"
   },
 
   "scripts": {

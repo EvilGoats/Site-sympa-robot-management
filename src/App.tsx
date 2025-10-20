@@ -445,6 +445,7 @@ export default function SympaLanding() {
           <p className="mt-2 text-slate-300">Choisissez l’option qui convient à vos besoins. Tarifs de lancement v1.</p>
 
           <div className="mt-8 grid md:grid-cols-2 gap-6">
+            {/* Achat */}
             <Card className="border-indigo-500/20">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -471,34 +472,43 @@ export default function SympaLanding() {
               </CardContent>
             </Card>
 
+            {/* Abonnement mensuel (ex-Location) */}
             <Card className="border-indigo-500/20">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Cat className="h-5 w-5 text-indigo-400" /> Location
+                  <Cat className="h-5 w-5 text-indigo-400" /> Abonnement mensuel <span className="hidden sm:inline">SAV / IA / surveillance</span>
                   <span className="bg-emerald-700/30 text-emerald-200 text-xs px-2 py-1 rounded-full ml-2">
                     Souple
                   </span>
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3 text-sm text-slate-300">
-                <div className="text-3xl font-bold">50 € / mois</div>
+                <div className="text-3xl font-bold">50 € / mois*</div>
                 <ul className="space-y-2">
                   <li className="flex gap-2">
-                    <Check className="h-5 w-5 text-indigo-400" /> Robot inclus (chien ou chat)
+                    <Check className="h-5 w-5 text-indigo-400" /> SAV prioritaire & maintenance proactive
                   </li>
                   <li className="flex gap-2">
-                    <Check className="h-5 w-5 text-indigo-400" /> Mises à jour & télésurveillance
+                    <Check className="h-5 w-5 text-indigo-400" /> IA : mises à jour & nouvelles fonctionnalités
+                  </li>
+                  <li className="flex gap-2">
+                    <Check className="h-5 w-5 text-indigo-400" /> Télésurveillance 24/7 (optionnelle)
                   </li>
                   <li className="flex gap-2">
                     <Check className="h-5 w-5 text-indigo-400" /> Échange standard en 48h
                   </li>
                 </ul>
                 <Button variant="outline" className="rounded-2xl w-full" onClick={() => setShowContact(true)}>
-                  Essayer 3 mois
+                  Souscrire
                 </Button>
               </CardContent>
             </Card>
           </div>
+
+          {/* Note sous les cartes */}
+          <p className="mt-4 text-xs text-slate-400">
+            * Abonnement mensuel à payer <b>en plus</b> de l’achat du robot. Pas d’essai gratuit de 3 mois.
+          </p>
         </div>
       </section>
 
